@@ -1,12 +1,11 @@
 import torch
 import numpy as np
 import random
-from torchvision.models import shufflenet_v2_x0_5
 from tqdm import tqdm
 
 from statistics import mean
 
-from configs import ModelsConfigs
+from configs import models_configs
 from configs import DEVICE, DATA_DIR, LOGS_PATH, WEIGHTS_PATH
 from utils.dataloaders import get_data_loaders
 from utils.logger import Logger
@@ -20,16 +19,17 @@ torch.backends.cudnn.deterministic = True
 
 class Pipeline():
     def __init__(self, model, name: str) -> None:
+        self.name = name
         self.model = model
         self.device = torch.device(DEVICE)
         self.model.to(self.device)
 
-        self.config = getattr(ModelsConfigs, name)
+        self.config = getattr(models_configs, name)
 
         self.criterion = torch.nn.CrossEntropyLoss()
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=self.config.LR)
         self.results = self.config._asdict()
-        self.logger = Logger(process_name="shuffleNetV2X0_5", info=self.results)
+        self.logger = Logger(process_name=name, info=self.results)
         self.logger.info['TEST_LOSS'] = []
         self.logger.info['TRAIN_LOSS'] = []
 
@@ -50,10 +50,10 @@ class Pipeline():
         return loss.cpu()
 
     def loop(self):
-        train_loader, validation_loader, test_loader = get_data_loaders(data_dir=DATA_DIR, batch_size=self.config.BATCH_SIZE)
-
-        for epoch in range(self.config.BATCH_SIZE):
+        for epoch in range(self.config.EPOCHS):
             print(f"\nEPOCH {epoch+1} OUT OF {self.config.EPOCHS}")
+
+            train_loader, validation_loader, test_loader = get_data_loaders(data_dir=DATA_DIR, batch_size=self.config.BATCH_SIZE)
 
             train_loss = []
             test_loss = []

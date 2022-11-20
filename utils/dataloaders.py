@@ -45,8 +45,6 @@ def get_data_loaders(data_dir: str, batch_size: int):
     validation_data = Subset(datasets.ImageFolder(data_dir, transform=test_validation_transform), val_idx)
     test_data = Subset(datasets.ImageFolder(data_dir, transform=test_validation_transform), test_idx)
 
-
-
     train_loader = DataLoader(train_data, batch_size=batch_size, shuffle=True, num_workers=4)
     validation_loader = DataLoader(validation_data, batch_size=batch_size, shuffle=True, num_workers=4)
     test_loader = DataLoader(test_data, batch_size=batch_size, shuffle=True, num_workers=4)
