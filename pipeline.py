@@ -5,7 +5,7 @@ from tqdm import tqdm
 from PIL import Image
 from torchcam.methods import LayerCAM
 from torchcam.utils import overlay_mask
-from torchvision.transforms.functional import normalize, resize, to_pil_image
+from torchvision.transforms.functional import to_pil_image
 from torchvision import transforms
 from torchmetrics import Accuracy
 from matplotlib import pyplot as plt
@@ -78,8 +78,8 @@ class Pipeline():
             input = transforms.PILToTensor()(image)
             input = input.to(dtype=torch.float)
             input = input.to(device=self.device)
+            input /= 255.
 
-            self.model.train()
             self.model.zero_grad()
 
             out = self.model(input.unsqueeze(0))
@@ -91,14 +91,13 @@ class Pipeline():
             plt.imshow(result)
             plt.tight_layout()
             plt.savefig(TEST_IMGS_SAVE + self.name + "_epoch_" + str(epoch) + "_" + img_path)
-            plt.figure().clear()
+            plt.close('all')
 
             cam.remove_hooks()
             del cam
             del activation_map
 
             self.model.zero_grad()
-            self.model.eval()
 
     def loop(self):
 

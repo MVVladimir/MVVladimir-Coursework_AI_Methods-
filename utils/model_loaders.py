@@ -7,6 +7,7 @@ def shufflenet_v2_x0_5_loader():
     model = models.shufflenet_v2_x0_5(weights=models.ShuffleNet_V2_X0_5_Weights.DEFAULT)
     model.fc = torch.nn.Linear(in_features=model.fc.in_features, out_features=NUM_CLASSES)
     return model
+
 def resnet18_loader():
     model = models.resnet18(weights=models.ResNet18_Weights.DEFAULT)
     model.fc = torch.nn.Linear(in_features=model.fc.in_features, out_features=NUM_CLASSES)
@@ -60,36 +61,36 @@ def shufflenet_v2_x0_5_params(model):
 
 def resnet18_params(model):
     # return model.layer4[1].conv2, model.fc
-    return model.layer4[1].conv2
+    return model.layer4
 
 def resnet34_params(model):
     # return model.layer4[2].conv2, model.fc
-    return model.layer4[2].conv2
+    return model.layer4
 
 def resnet50_params(model):
     # return model.layer4[2].conv3, model.fc
-    return model.layer4[2].conv3
+    return model.layer4
 
 def alexnet_params(model):
     # return model.features[10], model.classifier[6]
-    return model.features[10]
+    return model.features
 
 def mobilenet_v3_small_params(model):
     # return model.features[12][0], model.classifier[0]
-    return model.features[12][0]
+    return model.features
 
 def mobilenet_v3_large_params(model):
     # return model.features[16][0], model.classifier[0]
-    return model.features[16][0]
+    return model.features
 
 def efficientnet_v2_s_params(model):
     # return model.features[7][0], model.classifier[1]
-    return model.features[7][0]
+    return model.features
 
 def efficientnet_v2_m_params(model):
     # return model.features[8][0], model.classifier[1]
-    return model.features[8][0]
+    return model.features
 
 def vgg11_params(model):
     # return model.features[18], model.classifier[6]
-    return model.features[18]
+    return model.features
