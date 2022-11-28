@@ -40,4 +40,11 @@ class Logger():
         plt.savefig(FIGS_PATH + self.process_name)
         plt.figure().clear()
 
+        plt.plot(self.info['TEST_ACC'])
+        plt.plot(self.info['TRAIN_ACC'])
+        plt.legend(['тест', 'обучение'])
+        plt.title(self.process_name + " точность (accuracy)")
+        plt.savefig(FIGS_PATH + "_acc_" + self.process_name)
+        plt.figure().clear()
+
         print(f"\n-- checkpoint for {self.process_name} made day: {current_day} time: {current_time}")
